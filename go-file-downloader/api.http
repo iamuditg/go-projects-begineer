@@ -1,0 +1,16 @@
+###
+
+# curl -X POST
+#  -H "Content-Type: application/json"
+#  -d '["https://example.com/file1.pdf", "https://example.com/file2.pdf"]'
+#  http://localhost:8080/downloads
+POST http://localhost:8080/downloads
+Content-Type: application/json
+
+[
+  "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+  "http://www.pdf995.com/samples/pdf.pdf"
+]
+
+###
+
