@@ -1,0 +1,38 @@
+###
+
+# curl --request POST
+#  --url http://localhost:3000/auth/register
+#  --header 'Content-Type: application/json'
+#  --data '{
+# "email": "elon@musk.com",
+# "password": "1234567"
+#}'
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "email": "elon@musk.com",
+  "password": "1234567"
+}
+
+###
+
+# curl --request POST
+#  --url http://localhost:3000/auth/login
+#  --header 'Content-Type: application/json'
+#  --data '{
+# "email": "elon@musk.com",
+# "password": "1234567"
+#}'
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "elon@musk.com",
+  "password": "1234567"
+}
+
+###
+
+
+
