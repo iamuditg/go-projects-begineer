@@ -9,6 +9,14 @@ import (
 	"log"
 )
 
+/*
+handler -> validate request and validate response
+name address -> validating empty
+services -> business logic
+repository -> fetching DB
+// pagination 10000 -> 10
+*/
+
 func main() {
 	c, err := config.LoadConfig()
 
@@ -24,3 +32,7 @@ func main() {
 
 	r.Run(c.Port)
 }
+
+// Ports
+// Database
+// Connection

@@ -15,12 +15,14 @@ import (
 
 func main() {
 	c, err := config.LoadConfig()
-
+	// PORT , GRPC
 	if err != nil {
 		log.Fatalln("Failed at config", err)
 	}
 
+	// database connection
 	h := db.Init(c.DBUrl)
+	// h instance entirely project
 
 	jwt := utils.JwtWrapper{
 		SecretKey:       c.JWTSecretKey,
@@ -48,4 +50,5 @@ func main() {
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalln("Failed to serve:", err)
 	}
+
 }

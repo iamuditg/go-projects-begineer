@@ -2,43 +2,40 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"github.com/gorilla/mux"
+	"github.com/iamuditg/services"
+	"log"
 	"net/http"
 )
 
-type Quote struct {
-	RegularMarketPrice         float64 `json:"regularMarketPrice"`
-	RegularMarketChangePercent float64 `json:"regularMarketChangePercent"`
-}
-
-type QuoteResponse struct {
-	Result []Quote `json:"result"`
-}
-
-func fetchNifty50Data() (QuoteResponse, error) {
-	url := "https://query1.finance.yahoo.com/v7/finance/quote?symbols=^NSEI"
-	resp, err := http.Get(url)
-	if err != nil {
-		return QuoteResponse{}, err
-	}
-	defer resp.Body.Close()
-
-	var quoteResponse QuoteResponse
-	err = json.NewDecoder(resp.Body).Decode(&quoteResponse)
-	if err != nil {
-		return QuoteResponse{}, err
-	}
-	fmt.Println(quoteResponse)
-	return quoteResponse, nil
-}
-
 func main() {
-	nifty50Data, err := fetchNifty50Data()
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
+	route := mux.NewRouter()
 
-	nifty50Quote := nifty50Data.Result[0]
-	fmt.Printf("Nifty 50 Live Data:\nPrice: %.2f\nChange Percent: %.2f%%\n", nifty50Quote.RegularMarketPrice, nifty50Quote.RegularMarketChangePercent)
+	route.HandleFunc("/api/v1/fetchNifty", GetNifty50Data).Methods("GET")
+	route.HandleFunc("/api/v1/fetchNiftyCompany", GetNifty50CompanyData).Methods("GET")
+
+	http.ListenAndServe(":8080", route)
+
+}
+
+func GetNifty50CompanyData(writer http.ResponseWriter, request *http.Request) {
+	nifty := services.Nifty{}
+	data, err := nifty.FetchNiftyCompaniesData()
+	if err != nil {
+		log.Fatal(err)
+	}
+	writer.Header().Set("Content-Type", "application/json")
+	writer.WriteHeader(http.StatusOK)
+	json.NewEncoder(writer).Encode(data)
+}
+
+func GetNifty50Data(writer http.ResponseWriter, request *http.Request) {
+	nifty := services.Nifty{}
+	data, err := nifty.FetchNiftyData()
+	if err != nil {
+		log.Fatal(err)
+	}
+	writer.Header().Set("Content-Type", "application/json")
+	writer.WriteHeader(http.StatusOK)
+	json.NewEncoder(writer).Encode(data)
 }
